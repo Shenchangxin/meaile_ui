@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../routes.dart';
+
 class PageContent extends StatelessWidget {
   final String name;
 
@@ -10,6 +12,15 @@ class PageContent extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text('当前页面 ：$name'),),
+      body: ListView(
+        children: <Widget>[
+          TextButton(child: Text(Routes.home),onPressed: (){
+            Navigator.pushNamed(context, Routes.home);
+          },),
+          TextButton(child: Text(Routes.login),onPressed: (){
+            Navigator.pushNamed(context, Routes.login);
+          },)
+        ],),
     );
     throw UnimplementedError();
   }
