@@ -19,7 +19,13 @@ class PageContent extends StatelessWidget {
           },),
           TextButton(child: Text(Routes.login),onPressed: (){
             Navigator.pushNamed(context, Routes.login);
-          },)
+          },),
+          TextButton(child: Text('Not Found'),onPressed: (){
+            Navigator.pushNamed(context, '/notFound');
+          },),
+          TextButton(child: Text('房屋详情页，id: 123'),onPressed: (){
+            Navigator.pushNamed(context, '/recipe/123');
+          },),
         ],),
     );
     throw UnimplementedError();
