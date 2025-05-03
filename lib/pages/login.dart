@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meaile_ui/widgets/page_content.dart';
-
+import '../api/common/common_api.dart';
 import '../routes.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,6 +11,9 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool showPassword = false;
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final CommonApi _commonApi = CommonApi();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,10 +26,12 @@ class _LoginPageState extends State<LoginPage> {
         child: ListView(
           children: [
             TextField(
+              controller: _usernameController,
               decoration: InputDecoration(labelText: '用户名', hintText: '请输入用户名'),
             ),
             Padding(padding: EdgeInsets.all(15)),
             TextField(
+              controller: _passwordController,
               decoration: InputDecoration(
                 labelText: '密码',
                 hintText: '请输入密码',
@@ -46,7 +50,11 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Padding(padding: EdgeInsets.all(10)),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                String username = _usernameController.text.trim();
+                String password = _passwordController.text.trim();
+                _commonApi.Login(context,username,password);
+              },
               style: ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.blue)),
               child: Text('登 录',style: TextStyle(color: Colors.white),),
             ),
