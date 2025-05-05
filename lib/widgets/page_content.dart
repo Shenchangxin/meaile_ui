@@ -28,6 +28,5 @@ class PageContent extends StatelessWidget {
           },),
         ],),
     );
-    throw UnimplementedError();
   }
 }

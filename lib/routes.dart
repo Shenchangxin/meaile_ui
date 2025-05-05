@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:meaile_ui/pages/home/index.dart';
 import 'package:meaile_ui/pages/login.dart';
 import 'package:meaile_ui/pages/not_found.dart';
-import 'package:meaile_ui/pages/recipe_detail/recipe_detail.dart';
+import 'package:meaile_ui/pages/book_detail/book_detail.dart';
 import 'package:meaile_ui/pages/register.dart';
 
 class Routes {
   static String home = '/';
   static String login = '/login';
   static String register = '/register';
-  static String recipeDetail = '/recipe/:recipeId';
+  static String bookDetail = '/book/getBookInfo/:bookId';
 
 
   static final Handler _homeHandler = Handler(
@@ -32,9 +32,9 @@ class Routes {
       return NotFoundPage();
     },
   );
-  static final Handler _recipeDetail_Handler = Handler(
+  static final Handler _bookDetail_Handler = Handler(
     handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
-      return RecipeDetailPage(recipeId: params['recipeId'][0]);
+      return BookDetailPage(bookId: params['bookId'][0]);
     },
   );
 
@@ -42,7 +42,7 @@ class Routes {
     router.define(home,handler: _homeHandler);
     router.define(login,handler: _loginHandler);
     router.define(register,handler: _registerHandler);
-    router.define(recipeDetail,handler: _recipeDetail_Handler);
+    router.define(bookDetail,handler: _bookDetail_Handler);
     router.notFoundHandler = _notFound_Handler;
   }
 
