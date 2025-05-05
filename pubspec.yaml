@@ -44,6 +44,7 @@ dependencies:
   flutter_easyloading: ^3.0.5
   dio_cookie_manager: ^3.2.0
   flutter_secure_storage: ^9.2.4
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

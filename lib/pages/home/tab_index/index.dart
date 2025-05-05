@@ -12,7 +12,7 @@ class TabIndex extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('tabIndex', style: TextStyle(color: Colors.white)),
+        title: Text('首页', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: Colors.green,
       ),

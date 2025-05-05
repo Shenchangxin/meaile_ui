@@ -184,7 +184,7 @@ class HttpUtil {
   }
 
   //错误信息
-  DioResponse createErrorEntity(DioError error) {
+  DioResponse createErrorEntity(DioException error) {
     // print('error.type${error.type}');
     var data = error.response?.data;
     print(
@@ -296,14 +296,13 @@ class HttpUtil {
   }
 
   /// 读取本地配置
-  Map<String, dynamic>? getAuthorizationHeader() {
+  Future<Map<String, dynamic>> getAuthorizationHeader() async {
     var headers = <String, dynamic>{};
-    SecureStorage().readData('token').then((token) {
-      if (token != null) {
-        headers['X-Authorization'] = 'Bearer $token';
-      }
-    });
-    return headers;
+    String? token = await SecureStorage().readData('token'); // 等待异步操作完成
+    if (token != null) {
+      headers['x-token'] = token;
+    }
+    return headers; // 返回包含 x-token 的 headers
   }
 
   /// restful get 操作
@@ -326,10 +325,9 @@ class HttpUtil {
   }) async {
     Options requestOptions = options ?? Options();
     requestOptions.headers = requestOptions.headers ?? {};
-    Map<String, dynamic>? authorization = getAuthorizationHeader();
-    if (authorization != null) {
-      requestOptions.headers!.addAll(authorization);
-    }
+    // 异步获取授权 headers 并合并到 requestOptions.headers 中
+    Map<String, dynamic> authorizationHeaders = await getAuthorizationHeader();
+    requestOptions.headers!.addAll(authorizationHeaders);
 
     try {
       print("入参：$path--$data");
@@ -357,11 +355,8 @@ class HttpUtil {
   }) async {
     Options requestOptions = options ?? Options();
     requestOptions.headers = requestOptions.headers ?? {};
-    Map<String, dynamic>? authorization = getAuthorizationHeader();
-
-    if (authorization != null) {
-      requestOptions.headers!.addAll(authorization);
-    }
+    Map<String, dynamic> authorizationHeaders = await getAuthorizationHeader();
+    requestOptions.headers!.addAll(authorizationHeaders);
     try {
       var response = await dio.post(
         path,
@@ -386,10 +381,8 @@ class HttpUtil {
   }) async {
     Options requestOptions = options ?? Options();
     requestOptions.headers = requestOptions.headers ?? {};
-    Map<String, dynamic>? authorization = getAuthorizationHeader();
-    if (authorization != null) {
-      requestOptions.headers!.addAll(authorization);
-    }
+    Map<String, dynamic> authorizationHeaders = await getAuthorizationHeader();
+    requestOptions.headers!.addAll(authorizationHeaders);
     var response = await dio.put(
       path,
       data: data,
@@ -409,10 +402,8 @@ class HttpUtil {
   }) async {
     Options requestOptions = options ?? Options();
     requestOptions.headers = requestOptions.headers ?? {};
-    Map<String, dynamic>? authorization = getAuthorizationHeader();
-    if (authorization != null) {
-      requestOptions.headers!.addAll(authorization);
-    }
+    Map<String, dynamic> authorizationHeaders = await getAuthorizationHeader();
+    requestOptions.headers!.addAll(authorizationHeaders);
     var response = await dio.patch(
       path,
       data: data,
@@ -432,10 +423,8 @@ class HttpUtil {
   }) async {
     Options requestOptions = options ?? Options();
     requestOptions.headers = requestOptions.headers ?? {};
-    Map<String, dynamic>? authorization = getAuthorizationHeader();
-    if (authorization != null) {
-      requestOptions.headers!.addAll(authorization);
-    }
+    Map<String, dynamic> authorizationHeaders = await getAuthorizationHeader();
+    requestOptions.headers!.addAll(authorizationHeaders);
     var response = await dio.delete(
       path,
       data: data,
@@ -455,10 +444,8 @@ class HttpUtil {
   }) async {
     Options requestOptions = options ?? Options();
     requestOptions.headers = requestOptions.headers ?? {};
-    Map<String, dynamic>? authorization = getAuthorizationHeader();
-    if (authorization != null) {
-      requestOptions.headers!.addAll(authorization);
-    }
+    Map<String, dynamic> authorizationHeaders = await getAuthorizationHeader();
+    requestOptions.headers!.addAll(authorizationHeaders);
     var response = await dio.post(
       path,
       data: FormData.fromMap(data),
@@ -479,10 +466,8 @@ class HttpUtil {
   }) async {
     Options requestOptions = options ?? Options();
     requestOptions.headers = requestOptions.headers ?? {};
-    Map<String, dynamic>? authorization = getAuthorizationHeader();
-    if (authorization != null) {
-      requestOptions.headers!.addAll(authorization);
-    }
+    Map<String, dynamic> authorizationHeaders = await getAuthorizationHeader();
+    requestOptions.headers!.addAll(authorizationHeaders);
     requestOptions.headers!.addAll({
       Headers.contentLengthHeader: dataLength.toString(),
     });

@@ -10,12 +10,14 @@ class Application extends StatelessWidget {
   Widget build(BuildContext context) {
     final router = FluroRouter();
     Routes.configureRoutes(router);
+    // final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
     return MaterialApp(
       builder: (context, child) {
         return EasyLoading.init()(context, child);
       },
       theme: ThemeData(primaryColor: Colors.green),
       onGenerateRoute: router.generator,
+      // navigatorObservers: [routeObserver], // 注册 RouteObserver
     );
   }
 }

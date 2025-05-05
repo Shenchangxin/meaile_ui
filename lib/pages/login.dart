@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () {
                 String username = _usernameController.text.trim();
                 String password = _passwordController.text.trim();
-                _commonApi.Login(context,username,password);
+                _commonApi.login(context,username,password);
               },
               style: ButtonStyle(backgroundColor: WidgetStateProperty.all(Colors.blue)),
               child: Text('登 录',style: TextStyle(color: Colors.white),),

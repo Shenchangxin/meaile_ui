@@ -1,10 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:meaile_ui/widgets/common_image.dart';
+import '../../../api/book/book_api.dart';
+import '../../../model/meaile_book.dart';
 import 'index_recommend_item.dart';
 import 'index_recommend_item_widget.dart';
 
-class IndexRecommend extends StatelessWidget {
+class IndexRecommend extends StatefulWidget {
   const IndexRecommend({super.key});
+
+  @override
+  State<IndexRecommend> createState() => _IndexRecommendState();
+}
+
+class _IndexRecommendState extends State<IndexRecommend> {
+  List<IndexRecommendItem> indexRecommendData = [];
+  @override
+  void initState() {
+    super.initState();
+    fetchRecommendData();
+  }
+
+  Future<void> fetchRecommendData() async {
+    try {
+      final bookApi = BookApi();
+      final List<MeaileBook> bookList = await bookApi.getRecommendBookList(1, 10);
+
+      setState(() {
+        indexRecommendData = bookList.map((book) {
+          String fileUrl = book.imageOssObj?.fileUrl ?? '';
+          // 将 127.0.0.1 替换为 10.0.2.2
+          fileUrl = fileUrl.replaceFirst('127.0.0.1', '10.0.2.2');
+          return IndexRecommendItem(
+            book.bookName ?? '',
+            book.introduction ?? '',
+            // book.imageOssObj?.fileUrl ?? '',
+            fileUrl,
+            '/book/getBookInfo/${book.id}', // 这里替换成实际的导航 URI
+          );
+        }).toList();
+      });
+    } catch (e) {
+      print('获取推荐数据失败: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,89 +63,6 @@ class IndexRecommend extends StatelessWidget {
             children:
                 indexRecommendData.map((item) {
                   return IndexRecommendItemWidget(data: item);
-                  // return InkWell(
-                  //   onTap:  () {
-                  //     // 点击跳转逻辑
-                  //     if (item.navigateUri.isNotEmpty) {
-                  //       try {
-                  //         // 使用 Navigator.pushNamed 跳转到指定路由
-                  //         Navigator.pushNamed(context, item.navigateUri);
-                  //       } catch (e) {
-                  //         print('路由不存在：$e');
-                  //         // 处理路由不存在的情况，如显示错误提示
-                  //         showDialog(
-                  //           context: context,
-                  //           builder: (context) => AlertDialog(
-                  //             title: Text('错误'),
-                  //             content: Text('跳转页面不存在！'),
-                  //             actions: [
-                  //               TextButton(
-                  //                 onPressed: () => Navigator.of(context).pop(),
-                  //                 child: Text('确定'),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         );
-                  //       }
-                  //     }
-                  //   },
-                  //   child: Container(
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.circular(12.0), // 圆角边框
-                  //       boxShadow: [
-                  //         BoxShadow(
-                  //           color: Colors.grey.withOpacity(0.05), // 阴影颜色和透明度
-                  //           spreadRadius: 1, // 阴影扩展半径
-                  //           blurRadius: 1, // 阴影模糊半径
-                  //           offset: Offset(0, 1), // 阴影偏移
-                  //         ),
-                  //       ],
-                  //     ),
-                  //     width:
-                  //     (MediaQuery.of(context).size.width - 24) /
-                  //         2, // 计算每个项目的宽度
-                  //     child: Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         // 将图片放在具有圆角的 ClipRRect 中
-                  //         ClipRRect(
-                  //           borderRadius: BorderRadius.only(
-                  //             topLeft: Radius.circular(12.0),
-                  //             topRight: Radius.circular(12.0),
-                  //           ),
-                  //           child: CommonImage(
-                  //             imageUrl: item.imageUri,
-                  //             fit: BoxFit.cover,
-                  //             height: 150,
-                  //             width: double.infinity,
-                  //           ),
-                  //         ),
-                  //         Padding(
-                  //           padding: const EdgeInsets.all(8.0),
-                  //           child: Column(
-                  //             crossAxisAlignment: CrossAxisAlignment.start,
-                  //             children: [
-                  //               Text(
-                  //                 item.title,
-                  //                 style: TextStyle(
-                  //                   fontWeight: FontWeight.bold,
-                  //                   fontSize: 16,
-                  //                 ),
-                  //               ),
-                  //               Text(
-                  //                 item.subTitle,
-                  //                 style: TextStyle(
-                  //                   fontSize: 14,
-                  //                   color: Colors.grey,
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // );
                 }).toList(),
           ),
         ),

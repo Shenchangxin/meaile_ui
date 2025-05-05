@@ -3,5 +3,7 @@ class ApiConstants{
  static  const String LOGIN = '/user/login';
  static  const String REGISTER = '/user/register';
 
+ static  const String BOOK_RECOMMEND_LIST = '/book/getRecommendBookList';
+
 
 }
