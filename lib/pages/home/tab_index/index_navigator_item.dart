@@ -9,7 +9,7 @@ class IndexNavigatorItem {
 
 List<IndexNavigatorItem> navigatorItemList = [
   IndexNavigatorItem('美食广场', 'static/images/美食.png', (BuildContext context) {
-    Navigator.of(context).pushNamed('/login');
+    Navigator.of(context).pushNamed('/foodCourt');
   }),
   IndexNavigatorItem('达人秀', 'static/images/相机.png', (BuildContext context) {
     Navigator.of(context).pushNamed('routeName');
