@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:meaile_ui/pages/book/book_list/tab_content.dart';
-import '../../../api/book/book_api.dart';
-import '../../../model/meaile_book.dart';
+import 'package:meaile_ui/pages/food/food_list/tab_content.dart';
+import '../../../api/food/food_api.dart';
+import '../../../model/meaile_food.dart';
 import '../../home/tab_index/index_recommend_item.dart';
 import '../../home/tab_index/index_search.dart';
 
@@ -24,33 +24,44 @@ class _FoodCourtPageState extends State<FoodCourtPage> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
-    fetchRecommendData();
+    fetchRecommendData(_currentTabIndex);
   }
 
   void _scrollListener() {
     if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent && !_isFetching && _hasMore) {
-      loadMoreRecommendData();
+      loadMoreRecommendData(_currentTabIndex);
     }
   }
 
-  Future<void> fetchRecommendData() async {
+  Future<void> fetchRecommendData(int index) async {
+    indexRecommendData.clear();
     try {
       setState(() {
         _isFetching = true;
       });
 
-      final bookApi = BookApi();
-      final List<MeaileBook> bookList = await bookApi.getRecommendBookList(_currentPage, 10);
-
+      final foodApi = FoodApi();
+      List<MeaileFood> foodList=[];
+      if(index == 0){
+        foodList = await foodApi.getFollowFoodList(_currentPage, 10);
+      }else if (index == 1){
+        foodList = await foodApi.getRecommendFoodList(_currentPage, 10);
+      }else if (index == 2){
+        foodList = await foodApi.getFatLossFoodList(_currentPage, 10);
+      }else if (index == 3){
+        foodList = await foodApi.getMuscleBuildingFoodList(_currentPage, 10);
+      }else if (index == 4){
+        foodList = await foodApi.getRecommendFoodList(_currentPage, 10);
+      }
       setState(() {
-        indexRecommendData = bookList.map((book) {
-          String fileUrl = book.imageOssObj?.fileUrl ?? '';
+        indexRecommendData = foodList.map((food) {
+          String fileUrl = food.imageOssObj?.fileUrl ?? '';
           fileUrl = fileUrl.replaceFirst('127.0.0.1', '10.0.2.2');
           return IndexRecommendItem(
-            book.bookName ?? '',
-            book.introduction ?? '',
+            food.foodName ?? '',
+            food.introduction ?? '',
             fileUrl,
-            '/book/getBookInfo/${book.id}',
+            '/food/getFoodInfo/${food.id}',
           );
         }).toList();
         _isFetching = false;
@@ -63,7 +74,7 @@ class _FoodCourtPageState extends State<FoodCourtPage> {
     }
   }
 
-  Future<void> loadMoreRecommendData() async {
+  Future<void> loadMoreRecommendData(int index) async {
     if (_isFetching) return;
 
     setState(() {
@@ -71,21 +82,31 @@ class _FoodCourtPageState extends State<FoodCourtPage> {
     });
 
     try {
-      final bookApi = BookApi();
-      final List<MeaileBook> bookList = await bookApi.getRecommendBookList(_currentPage + 1, 10);
-
-      if (bookList.isNotEmpty) {
+      final foodApi = FoodApi();
+      List<MeaileFood> foodList=[];
+      if(index == 0){//关注列表
+        foodList = await foodApi.getFollowFoodList(_currentPage + 1, 10);
+      }else if (index == 1){//推荐列表
+        foodList = await foodApi.getRecommendFoodList(_currentPage + 1, 10);
+      }else if (index == 2){//减脂
+        foodList = await foodApi.getFatLossFoodList(_currentPage + 1, 10);
+      }else if (index == 3){//增肌
+        foodList = await foodApi.getMuscleBuildingFoodList(_currentPage + 1, 10);
+      }else if (index == 4){//分类
+        foodList = await foodApi.getRecommendFoodList(_currentPage + 1, 10);
+      }
+      if (foodList.isNotEmpty) {
         setState(() {
           _currentPage++;
           indexRecommendData.addAll(
-            bookList.map((book) {
-              String fileUrl = book.imageOssObj?.fileUrl ?? '';
+            foodList.map((food) {
+              String fileUrl = food.imageOssObj?.fileUrl ?? '';
               fileUrl = fileUrl.replaceFirst('127.0.0.1', '10.0.2.2');
               return IndexRecommendItem(
-                book.bookName ?? '',
-                book.introduction ?? '',
+                food.foodName ?? '',
+                food.introduction ?? '',
                 fileUrl,
-                '/book/getBookInfo/${book.id}',
+                '/food/getFoodInfo/${food.id}',
               );
             }).toList(),
           );
@@ -114,7 +135,7 @@ class _FoodCourtPageState extends State<FoodCourtPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('首页', style: TextStyle(color: Colors.white)),
+        title: Text('美食广场', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: Colors.green,
       ),
@@ -133,25 +154,8 @@ class _FoodCourtPageState extends State<FoodCourtPage> {
                   onTitleSelected: (index) {
                     setState(() {
                       _currentTabIndex = index;
-                      // 根据选中的索引加载对应的内容
-                      switch (index) {
-                        case 0: // 关注
-                        // 加载关注内容
-                          break;
-                        case 1: // 推荐
-                          fetchRecommendData();
-                          break;
-                        case 2: // 减脂
-                        // 加载减脂内容
-                          break;
-                        case 3: // 增肌
-                        // 加载增肌内容
-                          break;
-                        case 4: // 分类
-                        // 加载分类内容
-                          break;
-                      }
                     });
+                    fetchRecommendData(index);
                   },
                 ),
               ],

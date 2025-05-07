@@ -5,6 +5,7 @@ import '../api_constants.dart';
 
 class BookApi {
 
+  /// 查询首页推荐列表
   Future<List<MeaileBook>> getRecommendBookList(int pageNum, int pageSize) async {
     try {
       // 构建请求参数
@@ -15,7 +16,7 @@ class BookApi {
 
       // 调用 HttpUtil 的 get 方法请求后端接口
       DioResponse response = await HttpUtil().get(
-        ApiConstants.BOOK_RECOMMEND_LIST, // 替换为实际的接口路径
+        ApiConstants.BOOK_RECOMMEND_LIST,
         queryParameters: queryParams,
       );
 
@@ -28,11 +29,11 @@ class BookApi {
 
         return bookList;
       } else {
-        throw Exception('获取推荐书籍列表失败: ${response.message}');
+        throw Exception('获取推荐食谱列表失败: ${response.message}');
       }
     } catch (e) {
       // 处理异常
-      print('获取推荐书籍列表时发生错误: $e');
+      print('获取推荐食谱列表时发生错误: $e');
       rethrow; // 重新抛出异常，让调用者可以处理
     }
   }
