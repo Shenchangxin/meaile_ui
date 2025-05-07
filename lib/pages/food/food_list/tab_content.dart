@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../home/tab_index/index_recommend_item.dart';
 import '../../home/tab_index/index_recommend_item_widget.dart';
 
@@ -60,7 +59,7 @@ class _TabContentWidgetState extends State<TabContentWidget> {
                     return GestureDetector(
                       onTap: () => _onTabTapped(index),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
                         height: double.infinity,
                         alignment: Alignment.center,
                         decoration: _currentIndex == index
@@ -88,7 +87,7 @@ class _TabContentWidgetState extends State<TabContentWidget> {
         ),
         // 内容区域
         Padding(
-          padding: const EdgeInsets.only(left: 8.0),
+          padding: const EdgeInsets.only(left: 1.0,top: 8.0),
           child: Wrap(
             spacing: 8.0,
             runSpacing: 8.0,

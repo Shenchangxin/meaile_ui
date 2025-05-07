@@ -1,6 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:meaile_ui/pages/book/book_list/index.dart';
+import 'package:meaile_ui/pages/food/food_list/index.dart';
 import 'package:meaile_ui/pages/home/index.dart';
 import 'package:meaile_ui/pages/login.dart';
 import 'package:meaile_ui/pages/not_found.dart';
