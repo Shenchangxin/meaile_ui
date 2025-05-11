@@ -39,15 +39,14 @@ class _TabContentWidgetState extends State<TabContentWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // 导航栏
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           height: 50,
           decoration: const BoxDecoration(
-            border: Border(
-              bottom: BorderSide(color: Colors.grey, width: 0.5),
-            ),
+            border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
           ),
           child: Row(
             children: [
@@ -62,19 +61,29 @@ class _TabContentWidgetState extends State<TabContentWidget> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         height: double.infinity,
                         alignment: Alignment.center,
-                        decoration: _currentIndex == index
-                            ? const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.red, width: 2),
-                          ),
-                        )
-                            : null,
+                        decoration:
+                            _currentIndex == index
+                                ? const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors.red,
+                                      width: 2,
+                                    ),
+                                  ),
+                                )
+                                : null,
                         child: Text(
                           widget.titleList[index],
                           style: TextStyle(
                             fontSize: 16,
-                            fontWeight: _currentIndex == index ? FontWeight.bold : FontWeight.normal,
-                            color: _currentIndex == index ? Colors.red : Colors.black,
+                            fontWeight:
+                                _currentIndex == index
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                            color:
+                                _currentIndex == index
+                                    ? Colors.red
+                                    : Colors.black,
                           ),
                         ),
                       ),
@@ -87,13 +96,14 @@ class _TabContentWidgetState extends State<TabContentWidget> {
         ),
         // 内容区域
         Padding(
-          padding: const EdgeInsets.only(left: 1.0,top: 8.0),
+          padding: const EdgeInsets.only(left: 8.0, top: 8.0),
           child: Wrap(
             spacing: 8.0,
             runSpacing: 8.0,
-            children: widget.contentList.map((item) {
-              return IndexRecommendItemWidget(data: item);
-            }).toList(),
+            children:
+                widget.contentList.map((item) {
+                  return IndexRecommendItemWidget(data: item);
+                }).toList(),
           ),
         ),
       ],
