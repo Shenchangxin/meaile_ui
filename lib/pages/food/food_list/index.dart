@@ -19,7 +19,7 @@ class _FoodCourtPageState extends State<FoodCourtPage> {
   int _currentPage = 1;
   bool _isFetching = false;
   bool _hasMore = true; // 是否还有更多数据，默认为 true
-  int _currentTabIndex = 1; // 当前选中的导航索引
+  int _currentTabIndex = 0; // 当前选中的导航索引
   @override
   void initState() {
     super.initState();
@@ -56,7 +56,7 @@ class _FoodCourtPageState extends State<FoodCourtPage> {
       setState(() {
         indexRecommendData = foodList.map((food) {
           String fileUrl = food.imageOssObj?.fileUrl ?? '';
-          fileUrl = fileUrl.replaceFirst('127.0.0.1', '10.0.2.2');
+          // fileUrl = fileUrl.replaceFirst('127.0.0.1', '10.0.2.2');
           return IndexRecommendItem(
             food.foodName ?? '',
             food.introduction ?? '',

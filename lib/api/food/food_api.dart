@@ -21,7 +21,7 @@ class FoodApi {
       // 检查响应状态码
       if (response.code == 200) {
         // 将响应数据转换为 MeaileFood 对象列表
-        List<MeaileFood> foodList = (response.data['data']['list'] as List)
+        List<MeaileFood> foodList = (response.data['data'] as List)
             .map((item) => MeaileFood.fromJson(item))
             .toList();
 
@@ -53,7 +53,7 @@ class FoodApi {
       // 检查响应状态码
       if (response.code == 200) {
         // 将响应数据转换为 MeaileFood 对象列表
-        List<MeaileFood> foodList = (response.data['data']['list'] as List)
+        List<MeaileFood> foodList = (response.data['data'] as List)
             .map((item) => MeaileFood.fromJson(item))
             .toList();
 
@@ -85,7 +85,7 @@ class FoodApi {
       // 检查响应状态码
       if (response.code == 200) {
         // 将响应数据转换为 MeaileFood 对象列表
-        List<MeaileFood> foodList = (response.data['data']['list'] as List)
+        List<MeaileFood> foodList = (response.data['data'] as List)
             .map((item) => MeaileFood.fromJson(item))
             .toList();
 
@@ -117,7 +117,7 @@ class FoodApi {
       // 检查响应状态码
       if (response.code == 200) {
         // 将响应数据转换为 MeaileFood 对象列表
-        List<MeaileFood> foodList = (response.data['data']['list'] as List)
+        List<MeaileFood> foodList = (response.data['data'] as List)
             .map((item) => MeaileFood.fromJson(item))
             .toList();
 

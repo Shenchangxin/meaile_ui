@@ -82,7 +82,7 @@ class _TabIndexState extends State<TabIndex> {
           indexRecommendData.addAll(
             bookList.map((book) {
               String fileUrl = book.imageOssObj?.fileUrl ?? '';
-              fileUrl = fileUrl.replaceFirst('127.0.0.1', '10.0.2.2');
+              // fileUrl = fileUrl.replaceFirst('127.0.0.1', '10.0.2.2');
               return IndexRecommendItem(
                 book.bookName ?? '',
                 book.introduction ?? '',
