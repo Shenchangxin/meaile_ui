@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:meaile_ui/pages/food/food_detail/index.dart';
 import 'package:meaile_ui/pages/food/food_list/index.dart';
 import 'package:meaile_ui/pages/home/index.dart';
 import 'package:meaile_ui/pages/login.dart';
@@ -13,6 +14,7 @@ class Routes {
   static String register = '/register';
   static String bookDetail = '/book/getBookInfo/:bookId';
   static String foodCourt = '/foodCourt';
+  static String foodDetail = '/food/getFoodInfo/:foodId';
 
 
   static final Handler _homeHandler = Handler(
@@ -44,6 +46,11 @@ class Routes {
       return FoodCourtPage();
     },
   );
+  static final Handler _foodDetail_Handler = Handler(
+    handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+      return FoodDetailPage(foodId: params['foodId'][0]);
+    },
+  );
 
   static void configureRoutes(FluroRouter router){
     router.define(home,handler: _homeHandler);
@@ -51,6 +58,7 @@ class Routes {
     router.define(register,handler: _registerHandler);
     router.define(bookDetail,handler: _bookDetail_Handler);
     router.define(foodCourt,handler: _foodCourt_Handler);
+    router.define(foodDetail,handler: _foodDetail_Handler);
     router.notFoundHandler = _notFound_Handler;
   }
 
