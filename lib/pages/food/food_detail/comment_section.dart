@@ -1,8 +1,8 @@
 // 评论区组件
 import 'package:flutter/material.dart';
 
+import '../../../model/vo/comment.dart';
 import 'comment_item.dart';
-import 'index.dart';
 
 class CommentSection extends StatelessWidget {
   final List<Comment> comments;
@@ -25,7 +25,7 @@ class CommentSection extends StatelessWidget {
             avatarUrl: comment.avatarUrl,
             username: comment.username,
             content: comment.content,
-          )).toList(),
+          )),
         ],
       ),
     );
