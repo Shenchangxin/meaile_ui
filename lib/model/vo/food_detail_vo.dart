@@ -1,5 +1,3 @@
-import 'comment.dart';
-
 class FoodDetailData {
   final int foodId;
   final int userId;
@@ -11,7 +9,6 @@ class FoodDetailData {
   final int shareCount;
   final int commentCount;
   final List<String> mediaUrls;
-  final List<Comment> comments;
 
   FoodDetailData({
     required this.foodId,
@@ -24,22 +21,21 @@ class FoodDetailData {
     required this.title,
     required this.description,
     required this.mediaUrls,
-    required this.comments,
   });
   factory FoodDetailData.fromJson(Map<String, dynamic> json) {
     final creator = json['creator'] as Map<String, dynamic>;
     return FoodDetailData(
       foodId: json['id'] as int,
-      userId: creator['userId'] as int,
-      likeCount: json['likeCount'] as int,
-      shareCount: json['shareCount'] as int,
-      commentCount: json['commentCount'] as int,
-      userName: creator['userName'] as String,
-      userAvatar: creator['userAvatar'] as String,
-      title: json['title'] as String,
-      description: json['description'] as String,
+      userId: creator['id'] as int,
+      likeCount: json['likeCount'] ?? 0,
+      shareCount: json['shareCount'] ?? 0,
+      commentCount: json['commentCount'] ?? 0,
+      userName: creator['userName'] ?? '',
+      userAvatar: creator['userAvatar'] ?? '',
+      title: json['title'] ?? '',
+      description: json['description'] ?? '',
       mediaUrls: List<String>.from(json['mediaUrls']),
-      comments: List<Comment>.from(json['comments'].map((x) => Comment.fromJson(x))),
+      // comments: List<Comment>.from(json['comments'].map((x) => Comment.fromJson(x))),
     );
   }
 
@@ -55,7 +51,6 @@ class FoodDetailData {
       'title': title,
       'description': description,
       'mediaUrls': mediaUrls,
-      'comments': comments,
     };
   }
 }
