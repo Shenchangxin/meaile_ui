@@ -12,7 +12,7 @@ class MediaComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 250,
+      height: 500,
       child: PageView(
         children: mediaUrls.map((url) => Image.network(url, fit: BoxFit.cover)).toList(),
       ),

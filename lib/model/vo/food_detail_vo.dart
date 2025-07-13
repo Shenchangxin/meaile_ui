@@ -1,17 +1,14 @@
-import 'comment.dart';
-
 class FoodDetailData {
   final int foodId;
   final int userId;
   final String userName;
   final String userAvatar;
-  final String title;
-  final String description;
+  final String foodName;
+  final String introduction;
   final int likeCount;
   final int shareCount;
   final int commentCount;
   final List<String> mediaUrls;
-  final List<Comment> comments;
 
   FoodDetailData({
     required this.foodId,
@@ -21,25 +18,24 @@ class FoodDetailData {
     required this.commentCount,
     required this.userName,
     required this.userAvatar,
-    required this.title,
-    required this.description,
+    required this.foodName,
+    required this.introduction,
     required this.mediaUrls,
-    required this.comments,
   });
   factory FoodDetailData.fromJson(Map<String, dynamic> json) {
     final creator = json['creator'] as Map<String, dynamic>;
     return FoodDetailData(
       foodId: json['id'] as int,
-      userId: creator['userId'] as int,
-      likeCount: json['likeCount'] as int,
-      shareCount: json['shareCount'] as int,
-      commentCount: json['commentCount'] as int,
-      userName: creator['userName'] as String,
-      userAvatar: creator['userAvatar'] as String,
-      title: json['title'] as String,
-      description: json['description'] as String,
+      userId: creator['id'] as int,
+      likeCount: json['likeCount'] ?? 0,
+      shareCount: json['shareCount'] ?? 0,
+      commentCount: json['commentCount'] ?? 0,
+      userName: creator['userName'] ?? '',
+      userAvatar: creator['userAvatar'] ?? '',
+      foodName: json['foodName'] ?? '',
+      introduction: json['introduction'] ?? '',
       mediaUrls: List<String>.from(json['mediaUrls']),
-      comments: List<Comment>.from(json['comments'].map((x) => Comment.fromJson(x))),
+      // comments: List<Comment>.from(json['comments'].map((x) => Comment.fromJson(x))),
     );
   }
 
@@ -52,10 +48,9 @@ class FoodDetailData {
       'commentCount': commentCount,
       'userName': userName,
       'userAvatar': userAvatar,
-      'title': title,
-      'description': description,
+      'foodName': foodName,
+      'introduction': introduction,
       'mediaUrls': mediaUrls,
-      'comments': comments,
     };
   }
 }

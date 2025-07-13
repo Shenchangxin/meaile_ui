@@ -1,11 +1,11 @@
 // 评论区组件
 import 'package:flutter/material.dart';
 
-import '../../../model/vo/comment.dart';
+import '../../../model/meaile_comment.dart';
 import 'comment_item.dart';
 
 class CommentSection extends StatelessWidget {
-  final List<Comment> comments;
+  final List<MeaileComment> comments;
 
   const CommentSection({
     super.key,
@@ -22,9 +22,9 @@ class CommentSection extends StatelessWidget {
           const Text('评论', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           const SizedBox(height: 5),
           ...comments.map((comment) => CommentItem(
-            avatarUrl: comment.avatarUrl,
-            username: comment.username,
-            content: comment.content,
+            avatarUrl: comment.avatarUrl ?? '',
+            username: comment.username ?? '',
+            content: comment.content ?? '',
           )),
         ],
       ),

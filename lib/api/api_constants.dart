@@ -13,4 +13,7 @@ class ApiConstants{
  static  const String FOOD_GETFOODINFO = '/food/getFoodInfo/';
 
 
+ static  const String COMMENT_GETCOMMENTLISTBYBIZID = '/comment/getCommentList';
+
+
 }

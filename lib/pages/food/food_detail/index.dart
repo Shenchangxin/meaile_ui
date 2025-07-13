@@ -1,7 +1,8 @@
 // 菜品详情页面
 import 'package:flutter/material.dart';
+import 'package:meaile_ui/api/comment/comment_api.dart';
 import 'package:meaile_ui/api/food/food_api.dart';
-import '../../../model/vo/comment.dart';
+import '../../../model/meaile_comment.dart';
 import '../../../model/vo/food_detail_vo.dart';
 import 'bottom_bar.dart';
 import 'comment_section.dart';
@@ -21,25 +22,56 @@ class FoodDetailPage extends StatefulWidget {
 }
 
 class _FoodDetailPageState extends State<FoodDetailPage> {
+  final ScrollController _scrollController = ScrollController();
   late FoodDetailData foodDetailData;
+  late List<MeaileComment> comments = [];
   bool isFollowing = false;
-
+  int _currentPage = 1;
+  bool _isFetching = false;
+  bool _hasMore = true; // 是否还有更多数据，默认为 true
 
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_scrollListener);
     fetchFoodDetails();
   }
-
+  void _scrollListener() {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent && !_isFetching && _hasMore) {
+      loadMoreRecommendData();
+    }
+  }
   void fetchFoodDetails() async {
     // 调用后端接口获取数据
     final foodApi = FoodApi();
-
+    final commentApi = CommentApi();
     final foodDetailData = await foodApi.getFoodInfo(widget.foodId);
-
+    final comments = await commentApi.getCommentListByBizId(_currentPage, 10, int.tryParse(widget.foodId) ?? 0);
     setState(() {
       this.foodDetailData = foodDetailData;
+      this.comments = comments;
     });
+  }
+  Future<void> loadMoreRecommendData() async {
+    if (_isFetching) return;
+
+    setState(() {
+      _isFetching = true;
+    });
+    final commentApi = CommentApi();
+    final comments = await commentApi.getCommentListByBizId(_currentPage+1, 10, widget.foodId as int);
+    if (comments.isNotEmpty) {
+      setState(() {
+        _currentPage++;
+        this.comments.addAll(comments);
+        _isFetching = false;
+      });
+    } else {
+      setState(() {
+        _hasMore = false;
+        _isFetching = false;
+      });
+    }
   }
 
   void toggleFollow() {
@@ -98,54 +130,117 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // 内容区域
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (foodDetailData.mediaUrls.isNotEmpty)
-                  MediaComponent(mediaUrls: foodDetailData.mediaUrls),
-                ContentComponent(
-                  title: foodDetailData.title,
-                  description: foodDetailData.description,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double screenWidth = constraints.maxWidth;
+          double screenHeight = constraints.maxHeight;
+          return Stack(
+            children: [
+              // 内容区域
+              SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: screenHeight,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (foodDetailData.mediaUrls.isNotEmpty)
+                        MediaComponent(mediaUrls: foodDetailData.mediaUrls),
+                      ContentComponent(
+                        title: foodDetailData.foodName,
+                        description: foodDetailData.introduction,
+                      ),
+                      CommentSection(comments: comments),
+                      const SizedBox(height: 80), // 给底部栏留出空间
+                    ],
+                  ),
                 ),
-                CommentSection(comments: foodDetailData.comments),
-              ],
-            ),
-          ),
-          // 顶部栏
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: TopAppBar(
-              userName: foodDetailData.userName,
-              userAvatar: foodDetailData.userAvatar,
-              onBack: () => Navigator.of(context).pop(),
-              onFollow: toggleFollow,
-              onShare: () {
-                // 显示分享框的逻辑
-              },
-              isFollowing: isFollowing,
-            ),
-          ),
-          // 底部栏
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: BottomBar(
-              likeCount: foodDetailData.likeCount,
-              shareCount: foodDetailData.shareCount,
-              commentCount: foodDetailData.commentCount,
-            ),
-          ),
-        ],
+              ),
+              // 顶部栏
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: TopAppBar(
+                  userName: foodDetailData.userName,
+                  userAvatar: foodDetailData.userAvatar,
+                  onBack: () => Navigator.of(context).pop(),
+                  onFollow: toggleFollow,
+                  onShare: () {
+                    // 显示分享框的逻辑
+                  },
+                  isFollowing: isFollowing,
+                ),
+              ),
+              // 底部栏
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: BottomBar(
+                  likeCount: foodDetailData.likeCount,
+                  shareCount: foodDetailData.shareCount,
+                  commentCount: foodDetailData.commentCount,
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     body: Stack(
+  //       children: [
+  //         // 内容区域
+  //         SingleChildScrollView(
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               if (foodDetailData.mediaUrls.isNotEmpty)
+  //                 MediaComponent(mediaUrls: foodDetailData.mediaUrls),
+  //               ContentComponent(
+  //                 title: foodDetailData.title,
+  //                 description: foodDetailData.description,
+  //               ),
+  //               CommentSection(comments: comments),
+  //             ],
+  //           ),
+  //         ),
+  //         // 顶部栏
+  //         Positioned(
+  //           top: 0,
+  //           left: 0,
+  //           right: 0,
+  //           child: TopAppBar(
+  //             userName: foodDetailData.userName,
+  //             userAvatar: foodDetailData.userAvatar,
+  //             onBack: () => Navigator.of(context).pop(),
+  //             onFollow: toggleFollow,
+  //             onShare: () {
+  //               // 显示分享框的逻辑
+  //             },
+  //             isFollowing: isFollowing,
+  //           ),
+  //         ),
+  //         // 底部栏
+  //         Positioned(
+  //           bottom: 0,
+  //           left: 0,
+  //           right: 0,
+  //           child: BottomBar(
+  //             likeCount: foodDetailData.likeCount,
+  //             shareCount: foodDetailData.shareCount,
+  //             commentCount: foodDetailData.commentCount,
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
 
 
