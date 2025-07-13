@@ -3,8 +3,8 @@ class FoodDetailData {
   final int userId;
   final String userName;
   final String userAvatar;
-  final String title;
-  final String description;
+  final String foodName;
+  final String introduction;
   final int likeCount;
   final int shareCount;
   final int commentCount;
@@ -18,8 +18,8 @@ class FoodDetailData {
     required this.commentCount,
     required this.userName,
     required this.userAvatar,
-    required this.title,
-    required this.description,
+    required this.foodName,
+    required this.introduction,
     required this.mediaUrls,
   });
   factory FoodDetailData.fromJson(Map<String, dynamic> json) {
@@ -32,8 +32,8 @@ class FoodDetailData {
       commentCount: json['commentCount'] ?? 0,
       userName: creator['userName'] ?? '',
       userAvatar: creator['userAvatar'] ?? '',
-      title: json['title'] ?? '',
-      description: json['description'] ?? '',
+      foodName: json['foodName'] ?? '',
+      introduction: json['introduction'] ?? '',
       mediaUrls: List<String>.from(json['mediaUrls']),
       // comments: List<Comment>.from(json['comments'].map((x) => Comment.fromJson(x))),
     );
@@ -48,8 +48,8 @@ class FoodDetailData {
       'commentCount': commentCount,
       'userName': userName,
       'userAvatar': userAvatar,
-      'title': title,
-      'description': description,
+      'foodName': foodName,
+      'introduction': introduction,
       'mediaUrls': mediaUrls,
     };
   }
