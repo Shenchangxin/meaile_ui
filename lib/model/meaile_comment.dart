@@ -5,8 +5,9 @@ class MeaileComment {
   final int? userId;
   final int? likeCount;
   final String? avatarUrl;
-  final String? username;
-  final String? content;
+  final String? userName;
+  final String? nickName;
+  final String? commentContent;
   final DateTime? createTime;
   final DateTime? updateTime;
 
@@ -15,8 +16,9 @@ class MeaileComment {
     this.userId,
     this.likeCount,
     this.avatarUrl,
-    this.username,
-    this.content,
+    this.userName,
+    this.nickName,
+    this.commentContent,
     this.createTime,
     this.updateTime,
   });
@@ -27,8 +29,9 @@ class MeaileComment {
       userId: json['userId']?.toInt(),
       likeCount: json['likeCount']?.toInt(),
       avatarUrl: json['avatarUrl'],
-      username: json['username'],
-      content: json['content'],
+      userName: json['userName'],
+      nickName: json['nickName'],
+      commentContent: json['commentContent'],
       createTime: json['createTime'] != null
           ? DateFormat('yyyy-MM-ddTHH:mm:ss').parse(json['createTime'])
           : null,
@@ -44,8 +47,9 @@ class MeaileComment {
       'userId': userId,
       'likeCount': likeCount,
       'avatarUrl': avatarUrl,
-      'username': username,
-      'content': content,
+      'userName': userName,
+      'nickName': nickName,
+      'commentContent': commentContent,
       'createTime': createTime != null
           ? DateFormat('yyyy-MM-ddTHH:mm:ss').format(createTime!)
           : null,

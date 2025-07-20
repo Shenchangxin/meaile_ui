@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 class CommentItem extends StatefulWidget {
   final String avatarUrl;
-  final String username;
-  final String content;
+  final String userName;
+  final String commentContent;
 
   const CommentItem({
     super.key,
     required this.avatarUrl,
-    required this.username,
-    required this.content,
+    required this.userName,
+    required this.commentContent,
   });
 
   @override
@@ -37,13 +37,13 @@ class _CommentItemState extends State<CommentItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(widget.username, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  Text(widget.userName, style: const TextStyle(fontWeight: FontWeight.bold)),
                   Text(
                     isExpanded
-                        ? widget.content
-                        : (widget.content.length > 30 ? '${widget.content.substring(0, 30)}...' : widget.content),
+                        ? widget.commentContent
+                        : (widget.commentContent.length > 30 ? '${widget.commentContent.substring(0, 30)}...' : widget.commentContent),
                   ),
-                  if (widget.content.length > 30)
+                  if (widget.commentContent.length > 30)
                     TextButton(
                       onPressed: () {
                         setState(() {

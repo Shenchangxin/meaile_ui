@@ -23,8 +23,8 @@ class CommentSection extends StatelessWidget {
           const SizedBox(height: 5),
           ...comments.map((comment) => CommentItem(
             avatarUrl: comment.avatarUrl ?? '',
-            username: comment.username ?? '',
-            content: comment.content ?? '',
+            userName: comment.userName ?? '',
+            commentContent: comment.commentContent ?? '',
           )),
         ],
       ),

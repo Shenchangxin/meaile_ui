@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // 顶部栏组件
 class TopAppBar extends StatelessWidget {
   final String userName;
-  final String userAvatar;
+  final String userAvatarUrl;
   final VoidCallback onBack;
   final VoidCallback onFollow;
   final VoidCallback onShare;
@@ -12,7 +12,7 @@ class TopAppBar extends StatelessWidget {
   const TopAppBar({
     super.key,
     required this.userName,
-    required this.userAvatar,
+    required this.userAvatarUrl,
     required this.onBack,
     required this.onFollow,
     required this.onShare,
@@ -33,7 +33,7 @@ class TopAppBar extends StatelessWidget {
           IconButton(icon: const Icon(Icons.arrow_back), onPressed: onBack),
           CircleAvatar(
             radius: 18,
-            backgroundImage: NetworkImage(userAvatar),
+            backgroundImage: NetworkImage(userAvatarUrl),
           ),
           const SizedBox(width: 10),
           Text(userName),
