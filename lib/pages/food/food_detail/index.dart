@@ -1,6 +1,8 @@
 // 菜品详情页面
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:meaile_ui/api/comment/comment_api.dart';
+import 'package:meaile_ui/api/follow/follow_api.dart';
 import 'package:meaile_ui/api/food/food_api.dart';
 import '../../../model/meaile_comment.dart';
 import '../../../model/vo/food_detail_vo.dart';
@@ -32,9 +34,10 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
 
   @override
   void initState() {
+    fetchFoodDetails();
     super.initState();
     _scrollController.addListener(_scrollListener);
-    fetchFoodDetails();
+
   }
   void _scrollListener() {
     if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent && !_isFetching && _hasMore) {
@@ -74,11 +77,25 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
     }
   }
 
-  void toggleFollow() {
-    setState(() {
-      isFollowing = !isFollowing;
-      // 调用后端关注/取关接口
-    });
+  Future<void> toggleFollow() async{
+    if(isFollowing){
+      //调用后端取关接口
+      setState(() {
+        isFollowing = !isFollowing;
+      });
+    }else{
+      // 调用后端关注接口
+      final followApi = FollowApi();
+      final followRes = await followApi.followUser(foodDetailData.userName);
+      if(followRes){
+        setState(() {
+          isFollowing = !isFollowing;
+        });
+      }else{
+        EasyLoading.showError('关注作者失败');
+      }
+    }
+
   }
   void showShareBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -164,7 +181,7 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                 right: 0,
                 child: TopAppBar(
                   userName: foodDetailData.userName,
-                  userAvatar: foodDetailData.userAvatar,
+                  userAvatarUrl: foodDetailData.userAvatarUrl,
                   onBack: () => Navigator.of(context).pop(),
                   onFollow: toggleFollow,
                   onShare: () {

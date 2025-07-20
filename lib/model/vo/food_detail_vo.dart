@@ -2,7 +2,8 @@ class FoodDetailData {
   final int foodId;
   final int userId;
   final String userName;
-  final String userAvatar;
+  final String nickName;
+  final String userAvatarUrl;
   final String foodName;
   final String introduction;
   final int likeCount;
@@ -17,7 +18,8 @@ class FoodDetailData {
     required this.shareCount,
     required this.commentCount,
     required this.userName,
-    required this.userAvatar,
+    required this.nickName,
+    required this.userAvatarUrl,
     required this.foodName,
     required this.introduction,
     required this.mediaUrls,
@@ -30,8 +32,9 @@ class FoodDetailData {
       likeCount: json['likeCount'] ?? 0,
       shareCount: json['shareCount'] ?? 0,
       commentCount: json['commentCount'] ?? 0,
-      userName: creator['userName'] ?? '',
-      userAvatar: creator['userAvatar'] ?? '',
+      userName: json['userName'] ?? '',
+      nickName: json['nickName'] ?? '',
+      userAvatarUrl: json['userAvatarUrl'] ?? '',
       foodName: json['foodName'] ?? '',
       introduction: json['introduction'] ?? '',
       mediaUrls: List<String>.from(json['mediaUrls']),
@@ -47,7 +50,8 @@ class FoodDetailData {
       'shareCount': shareCount,
       'commentCount': commentCount,
       'userName': userName,
-      'userAvatar': userAvatar,
+      'nickName': nickName,
+      'userAvatarUrl': userAvatarUrl,
       'foodName': foodName,
       'introduction': introduction,
       'mediaUrls': mediaUrls,

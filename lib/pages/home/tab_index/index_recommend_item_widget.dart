@@ -83,6 +83,8 @@ class IndexRecommendItemWidget extends StatelessWidget{
                       fontSize: 14,
                       color: Colors.grey,
                     ),
+                    overflow: TextOverflow.ellipsis, // 设置超出部分显示为省略号
+                    maxLines: 1, // 设置最大显示行数为1
                   ),
                 ],
               ),
