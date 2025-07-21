@@ -9,6 +9,7 @@ class FoodDetailData {
   final int likeCount;
   final int shareCount;
   final int commentCount;
+  bool isFollowing = false;
   final List<String> mediaUrls;
 
   FoodDetailData({
@@ -23,6 +24,7 @@ class FoodDetailData {
     required this.foodName,
     required this.introduction,
     required this.mediaUrls,
+    required this.isFollowing,
   });
   factory FoodDetailData.fromJson(Map<String, dynamic> json) {
     final creator = json['creator'] as Map<String, dynamic>;
@@ -37,6 +39,7 @@ class FoodDetailData {
       userAvatarUrl: json['userAvatarUrl'] ?? '',
       foodName: json['foodName'] ?? '',
       introduction: json['introduction'] ?? '',
+      isFollowing: json['isFollowing'] ?? '',
       mediaUrls: List<String>.from(json['mediaUrls']),
       // comments: List<Comment>.from(json['comments'].map((x) => Comment.fromJson(x))),
     );
@@ -54,6 +57,7 @@ class FoodDetailData {
       'userAvatarUrl': userAvatarUrl,
       'foodName': foodName,
       'introduction': introduction,
+      'isFollowing': isFollowing,
       'mediaUrls': mediaUrls,
     };
   }

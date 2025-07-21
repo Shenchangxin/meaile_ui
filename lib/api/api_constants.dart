@@ -16,6 +16,7 @@ class ApiConstants{
  static  const String COMMENT_GETCOMMENTLISTBYBIZID = '/comment/getCommentList';
 
  static  const String FOLLOW_FOLLOW_USER = '/follow/followUser';
+ static  const String UNFOLLOW_FOLLOW_USER = '/follow/unfollowUser';
 
 
 }

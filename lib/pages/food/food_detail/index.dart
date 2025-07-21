@@ -27,7 +27,6 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
   final ScrollController _scrollController = ScrollController();
   late FoodDetailData foodDetailData;
   late List<MeaileComment> comments = [];
-  bool isFollowing = false;
   int _currentPage = 1;
   bool _isFetching = false;
   bool _hasMore = true; // 是否还有更多数据，默认为 true
@@ -78,18 +77,24 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
   }
 
   Future<void> toggleFollow() async{
-    if(isFollowing){
+    if(foodDetailData.isFollowing){
       //调用后端取关接口
-      setState(() {
-        isFollowing = !isFollowing;
-      });
+      final followApi = FollowApi();
+      final unfollowRes = await followApi.unfollowUser(foodDetailData.userName);
+      if(unfollowRes){
+        setState(() {
+          foodDetailData.isFollowing = !foodDetailData.isFollowing;
+        });
+      }else{
+        EasyLoading.showError('取关作者失败');
+      }
     }else{
       // 调用后端关注接口
       final followApi = FollowApi();
       final followRes = await followApi.followUser(foodDetailData.userName);
       if(followRes){
         setState(() {
-          isFollowing = !isFollowing;
+          foodDetailData.isFollowing = !foodDetailData.isFollowing;
         });
       }else{
         EasyLoading.showError('关注作者失败');
@@ -187,7 +192,7 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
                   onShare: () {
                     // 显示分享框的逻辑
                   },
-                  isFollowing: isFollowing,
+                  isFollowing: foodDetailData.isFollowing,
                 ),
               ),
               // 底部栏

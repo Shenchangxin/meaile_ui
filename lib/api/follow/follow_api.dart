@@ -32,4 +32,28 @@ class FollowApi {
       rethrow; // 重新抛出异常，让调用者可以处理
     }
   }
+  ///取关用户
+  Future<bool> unfollowUser(String followUserName) async {
+    try {
+      // 调用 HttpUtil 的 post 方法请求后端接口
+      DioResponse? response = await HttpUtil().post(
+        ApiConstants.UNFOLLOW_FOLLOW_USER,
+        data: {
+          "followUserName": followUserName,
+        },
+      );
+
+      // 检查响应状态码
+      if (response != null && response.code == 200) {
+        return true;
+      } else {
+        LogE("取关用户：$followUserName失败");
+        return false;
+      }
+    } catch (e) {
+      // 处理异常
+      LogE("取关用户：$followUserName发生错误：$e");
+      rethrow; // 重新抛出异常，让调用者可以处理
+    }
+  }
 }
